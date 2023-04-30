@@ -57,6 +57,12 @@ export const searchTraces = createAction(
   query => ({ query })
 );
 
+export const submitSearch = createAction(
+  '@JAEGER_API/SUBMIT_SEARCH',
+  query => JaegerAPI.submitSearch(query),
+  query => ({ query })
+);
+
 export const fetchServices = createAction('@JAEGER_API/FETCH_SERVICES', () => JaegerAPI.fetchServices());
 
 export const fetchServiceOperations = createAction(

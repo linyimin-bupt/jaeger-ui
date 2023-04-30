@@ -271,6 +271,7 @@ export class SearchFormImpl extends React.PureComponent {
       selectedService = '-',
       services,
       submitting: disabled,
+      submitSearch,
     } = this.props;
     const selectedServicePayload = services.find(s => s.name === selectedService);
     const opsForSvc = (selectedServicePayload && selectedServicePayload.operations) || [];
@@ -483,6 +484,17 @@ export class SearchFormImpl extends React.PureComponent {
         >
           Find Traces
         </Button>
+
+        <Button
+          htmlType="button"
+          className="SearchForm--submit"
+          disabled={disabled || noSelectedService || invalid}
+          data-test={markers.SUBMIT_BTN}
+          onClick={() => {submitSearch({submitType: 'searchFlameGraph', service: this.props.selectedService})}}
+        >
+          Find FlameGraph
+        </Button>
+
       </Form>
     );
   }
@@ -630,9 +642,13 @@ export function mapStateToProps(state) {
 }
 
 export function mapDispatchToProps(dispatch) {
-  const { searchTraces } = bindActionCreators(jaegerApiActions, dispatch);
+  const { searchTraces, submitSearch } = bindActionCreators(jaegerApiActions, dispatch);
   return {
-    onSubmit: fields => submitForm(fields, searchTraces),
+    onSubmit: fields => {
+      submitSearch({submitType: 'searchTraces'})
+      submitForm(fields, searchTraces)
+    },
+    submitSearch: query => submitSearch(query)
   };
 }
 

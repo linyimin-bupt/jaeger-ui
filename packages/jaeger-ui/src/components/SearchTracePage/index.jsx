@@ -38,6 +38,7 @@ import FileLoader from './FileLoader';
 
 import './index.css';
 import JaegerLogo from '../../img/jaeger-logo.svg';
+import { DEFAULT_API_ROOT } from '../../api/jaeger';
 
 const TabPane = Tabs.TabPane;
 
@@ -77,6 +78,17 @@ export class SearchTracePageImpl extends Component {
     this.props.history.push(getTraceLocation(traceID, { fromSearch: searchUrl }));
   };
 
+  renderFlameGraph = (service) => {
+    return <div style={{height: '100%'}}>
+      <iframe
+        src={`${DEFAULT_API_ROOT}flamegraph/view/${service}`}
+        width={'100%'}
+        height={'100%'}
+        style={{borderWidth: '1px'}}
+      />
+    </div>;
+  }
+
   render() {
     const {
       cohortAddTrace,
@@ -94,6 +106,8 @@ export class SearchTracePageImpl extends Component {
       queryOfResults,
       loadJsonTraces,
       urlQueryParams,
+      submitType,
+      selectedService
     } = this.props;
     const hasTraceResults = traceResults && traceResults.length > 0;
     const showErrors = errors && !loadingTraces;
@@ -127,7 +141,7 @@ export class SearchTracePageImpl extends Component {
               ))}
             </div>
           )}
-          {!showErrors && (
+          {!showErrors && (submitType === 'searchTraces') && (
             <SearchResults
               cohortAddTrace={cohortAddTrace}
               cohortRemoveTrace={cohortRemoveTrace}
@@ -145,6 +159,11 @@ export class SearchTracePageImpl extends Component {
               rawTraces={traceResultsToDownload}
             />
           )}
+
+          {!showErrors && (submitType === 'searchFlameGraph') && (
+            this.renderFlameGraph(selectedService)
+          )}
+
           {showLogo && (
             <img
               className="SearchTracePage--logo js-test-logo"
@@ -282,6 +301,8 @@ export function mapStateToProps(state) {
     maxTraceDuration: maxDuration,
     sortTracesBy: sortBy,
     urlQueryParams: Object.keys(query).length > 0 ? query : null,
+    submitType: state.submit?.submitType,
+    selectedService: state.submit?.service
   };
 }
 

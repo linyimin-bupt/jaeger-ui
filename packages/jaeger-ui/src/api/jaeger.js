@@ -124,6 +124,10 @@ const JaegerAPI = {
       query: `${servicesName}&${queryString.stringify(query)}`,
     }).then(d => ({ ...d, quantile: query.quantile }));
   },
+
+  submitSearch(query) {
+    return query;
+  }
 };
 
 export default JaegerAPI;

@@ -26,6 +26,7 @@ const initialState = {
     query: null,
     results: [],
   },
+  submitType: 'searchTraces'
 };
 
 function fetchTraceStarted(state, { meta }) {
@@ -96,7 +97,7 @@ function fetchSearchStarted(state, { meta }) {
     results: [],
     state: fetchedState.LOADING,
   };
-  return { ...state, search };
+  return { ...state, search, submitType: meta.submitType };
 }
 
 function searchDone(state, { meta, payload }) {
@@ -115,7 +116,7 @@ function searchDone(state, { meta, payload }) {
   }
   const traces = { ...state.traces, ...resultTraces };
   const search = { ...state.search, results, state: fetchedState.DONE };
-  return { ...state, search, traces, rawTraces: payloadData };
+  return { ...state, search, traces, rawTraces: payloadData, submitType: meta.submitType };
 }
 
 function searchErred(state, { meta, payload }) {
@@ -123,7 +124,7 @@ function searchErred(state, { meta, payload }) {
     return state;
   }
   const search = { ...state.search, error: payload, results: [], state: fetchedState.ERROR };
-  return { ...state, search };
+  return { ...state, search, submitType: meta.submitType};
 }
 
 function loadJsonStarted(state) {
