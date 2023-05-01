@@ -76,6 +76,15 @@ function getJSON(url, options = {}) {
   });
 }
 
+function getContent(url) {
+
+  const init = {"credentials": "same-origin"};
+
+  return fetch(url, init).then(response => {
+    return response.text();
+  });
+}
+
 export const DEFAULT_API_ROOT = prefixUrl('/api/');
 export const ANALYTICS_ROOT = prefixUrl('/analytics/');
 export const DEFAULT_DEPENDENCY_LOOKBACK = moment.duration(1, 'weeks').asMilliseconds();
@@ -126,6 +135,9 @@ const JaegerAPI = {
   },
 
   submitSearch(query) {
+    if (query.submitType === 'searchSummary') {
+      return getContent(`${this.apiRoot}markdown/view/${query.service}`)
+    }
     return query;
   }
 };

@@ -282,7 +282,7 @@ export class SearchFormImpl extends React.PureComponent {
         <FormItem
           label={
             <span>
-              Service <span className="SearchForm--labelCount">({services.length})</span>
+              Service <span className="SearchForm--labelCount">({services.length > 0 ? services.length -1 : 0})</span>
             </span>
           }
         >
@@ -293,7 +293,7 @@ export class SearchFormImpl extends React.PureComponent {
             props={{
               disabled,
               clearable: false,
-              options: services.map(v => ({ label: v.name, value: v.name })),
+              options: services.filter(v => v.name !== 'jaeger-query').map(v => ({ label: v.name, value: v.name })),
               required: true,
             }}
           />
@@ -482,7 +482,7 @@ export class SearchFormImpl extends React.PureComponent {
           disabled={disabled || noSelectedService || invalid}
           data-test={markers.SUBMIT_BTN}
         >
-          Find Traces
+          Traces
         </Button>
 
         <Button
@@ -492,7 +492,17 @@ export class SearchFormImpl extends React.PureComponent {
           data-test={markers.SUBMIT_BTN}
           onClick={() => {submitSearch({submitType: 'searchFlameGraph', service: this.props.selectedService})}}
         >
-          Find FlameGraph
+          FlameGraph
+        </Button>
+
+        <Button
+          htmlType="button"
+          className="SearchForm--submit"
+          disabled={disabled || noSelectedService || invalid}
+          data-test={markers.SUBMIT_BTN}
+          onClick={() => {submitSearch({submitType: 'searchSummary', service: this.props.selectedService})}}
+        >
+          Summary
         </Button>
 
       </Form>

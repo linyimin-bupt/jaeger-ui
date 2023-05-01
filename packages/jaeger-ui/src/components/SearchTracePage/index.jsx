@@ -40,6 +40,9 @@ import './index.css';
 import JaegerLogo from '../../img/jaeger-logo.svg';
 import { DEFAULT_API_ROOT } from '../../api/jaeger';
 
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
 const TabPane = Tabs.TabPane;
 
 // export for tests
@@ -89,6 +92,32 @@ export class SearchTracePageImpl extends Component {
     </div>;
   }
 
+
+  renderSummaryMarkdown = (content) => {
+
+    return (
+      <div>
+        <style>
+          {`
+        table {
+          border-collapse: collapse;
+          width: 100%;
+          margin-bottom: 16px;
+        }
+
+        th,
+        td {
+          border: 1px solid #ccc;
+          padding: 8px;
+        }
+      `}
+        </style>
+        <ReactMarkdown remarkPlugins={[remarkGfm]} children={content} />
+      </div>
+
+      )
+  }
+
   render() {
     const {
       cohortAddTrace,
@@ -107,7 +136,8 @@ export class SearchTracePageImpl extends Component {
       loadJsonTraces,
       urlQueryParams,
       submitType,
-      selectedService
+      selectedService,
+      markdown
     } = this.props;
     const hasTraceResults = traceResults && traceResults.length > 0;
     const showErrors = errors && !loadingTraces;
@@ -162,6 +192,10 @@ export class SearchTracePageImpl extends Component {
 
           {!showErrors && (submitType === 'searchFlameGraph') && (
             this.renderFlameGraph(selectedService)
+          )}
+
+          {!showErrors && (submitType === 'searchSummary') && (
+            this.renderSummaryMarkdown(markdown)
           )}
 
           {showLogo && (
@@ -302,7 +336,8 @@ export function mapStateToProps(state) {
     sortTracesBy: sortBy,
     urlQueryParams: Object.keys(query).length > 0 ? query : null,
     submitType: state.submit?.submitType,
-    selectedService: state.submit?.service
+    selectedService: state.submit?.service,
+    markdown: state.submit?.markdown
   };
 }
 
