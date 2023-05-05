@@ -42,6 +42,7 @@ import { DEFAULT_API_ROOT } from '../../api/jaeger';
 
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import rehypeRaw from "rehype-raw";
 
 const TabPane = Tabs.TabPane;
 
@@ -105,14 +106,44 @@ export class SearchTracePageImpl extends Component {
           margin-bottom: 16px;
         }
 
-        th,
+        th {
+          border: 1px solid #ccc;
+          padding: 8px;
+          text-align: center;
+        }
         td {
           border: 1px solid #ccc;
           padding: 8px;
         }
+        summary {
+          cursor: pointer;
+        }
+        h1 {
+          font-size: 24px;
+        }
+      
+        h2 {
+          font-size: 20px;
+        }
+      
+        h3 {
+          font-size: 16px;
+        }
+      
+        h4 {
+          font-size: 12px;
+        }
+      
+        h5 {
+          font-size: 10px;
+        }
+      
+        h6 {
+          font-size: 8px;
+        }
       `}
         </style>
-        <ReactMarkdown remarkPlugins={[remarkGfm]} children={content} />
+        <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} children={content} escapeHtml={false} />
       </div>
 
       )
