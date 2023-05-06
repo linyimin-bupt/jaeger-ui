@@ -44,6 +44,8 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import rehypeRaw from "rehype-raw";
 
+import markdownStyle from './MarkdownStyle'
+
 const TabPane = Tabs.TabPane;
 
 // export for tests
@@ -98,51 +100,7 @@ export class SearchTracePageImpl extends Component {
 
     return (
       <div>
-        <style>
-          {`
-        table {
-          border-collapse: collapse;
-          width: 100%;
-          margin-bottom: 16px;
-        }
-
-        th {
-          border: 1px solid #ccc;
-          padding: 8px;
-          text-align: center;
-        }
-        td {
-          border: 1px solid #ccc;
-          padding: 8px;
-        }
-        summary {
-          cursor: pointer;
-        }
-        h1 {
-          font-size: 24px;
-        }
-      
-        h2 {
-          font-size: 20px;
-        }
-      
-        h3 {
-          font-size: 16px;
-        }
-      
-        h4 {
-          font-size: 12px;
-        }
-      
-        h5 {
-          font-size: 10px;
-        }
-      
-        h6 {
-          font-size: 8px;
-        }
-      `}
-        </style>
+        <style>{markdownStyle}</style>
         <ReactMarkdown remarkPlugins={[remarkGfm]} rehypePlugins={[rehypeRaw]} children={content} escapeHtml={false} />
       </div>
 
