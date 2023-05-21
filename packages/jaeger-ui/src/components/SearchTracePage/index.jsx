@@ -187,7 +187,7 @@ export class SearchTracePageImpl extends Component {
             this.renderSummaryMarkdown(markdown)
           )}
 
-          {showLogo && (
+          {showLogo && (submitType !== 'searchSummary') && (submitType !== 'searchFlameGraph') && (
             <img
               className="SearchTracePage--logo js-test-logo"
               alt="presentation"
